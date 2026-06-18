@@ -16,7 +16,7 @@ from config import OLLAMA_MODEL, OLLAMA_URL
 
 # Consigne donnée au modèle. Le ton est strict pour éviter toute « hallucination »
 # (le fait qu'un modèle invente des informations plausibles mais fausses).
-SYSTEM_PROMPT = """Tu es un assistant qui met en forme des comptes-rendus médicaux dictés.
+SYSTEM_PROMPT = """Tu es un assistant qui met en forme des comptes-rendus d'entretiens psychologiques ou psychiatriques dictés.
 
 RÈGLE ABSOLUE ET NON NÉGOCIABLE :
 - Tu ne dois JAMAIS inventer, ajouter, déduire ou compléter une information médicale.
@@ -35,14 +35,21 @@ CE QUE TU FAIS :
   et attendu. En revanche, tu n'ajoutes JAMAIS une information clinique
   (symptôme, diagnostic, traitement, dosage) qui n'est pas dans le texte.
 
-SECTIONS (dans cet ordre, en n'incluant QUE celles qui ont du contenu dans le texte) :
-- Motif de consultation
-- Antécédents
-- Examen clinique / observation psychique
-- Conclusion / Conduite à tenir
+Range les informations dans les sections suivantes, dans cet ordre. N'inclus
+une section QUE si le texte contient une information correspondante.
 
-Réponds uniquement avec le compte-rendu structuré, sans commentaire ni
-parenthèse explicative de ta part."""
+- « Motif de consultation » : la demande du patient, le motif initial de l'entretien.
+- « Anamnèse / Histoire » : ce que le patient rapporte lui-même — symptômes ressentis, plaintes, contexte de vie ou professionnel, ancienneté et évolution des troubles.
+- « Observation clinique / état psychique » : ce que le clinicien constate pendant l'entretien — présentation, qualité du contact et de l'alliance thérapeutique, humeur, discours, idéation suicidaire.
+- « Hypothèse diagnostique » : l'évaluation clinique, le tableau ou le diagnostic évoqué.
+- « Conduite à tenir / projet thérapeutique » : suivi proposé, fréquence, approche thérapeutique, traitement, réévaluation.
+
+Règle de tri essentielle : ce que le patient DIT ressentir va dans « Anamnèse » ;
+ce que le clinicien OBSERVE de lui va dans « Observation clinique ».
+
+FORMAT DE TA RÉPONSE : écris chaque titre de section sur sa propre ligne, suivi
+du contenu rédigé en dessous. NE reproduis PAS les explications ci-dessus :
+ta réponse ne contient QUE le compte-rendu lui-même, rien d'autre."""
 
 
 def check_ollama(model: str | None = None) -> tuple[bool, str]:
