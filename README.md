@@ -1,8 +1,15 @@
-# 🩺 Transcription médicale locale (orientée psychologie / psychiatrie)
+# 🩺 whispsy
 
-Application de transcription de comptes-rendus dictés, fonctionnant **100 % en
-local** sur la machine. Aucune donnée audio ou texte ne quitte l'ordinateur :
-c'est conçu pour respecter le **secret médical** et le **RGPD**.
+**Transcription locale de comptes-rendus dictés, orientée psychologie / psychiatrie.**
+
+Application fonctionnant **100 % en local** sur la machine : aucune donnée audio
+ou texte ne quitte l'ordinateur. Conçue pour respecter le **secret médical** et
+le **RGPD**.
+
+> ⚕️ **Avertissement** — whispsy est un outil d'aide à la rédaction, **pas un
+> dispositif médical certifié**. Les transcriptions et comptes-rendus générés
+> doivent toujours être **relus et validés** par le praticien, qui reste seul
+> responsable du contenu. Fourni « tel quel », sans aucune garantie.
 
 ## Comment ça marche
 
@@ -37,6 +44,13 @@ laptops modestes (16 Go de RAM suffisent).
 ---
 
 ## Installation (à faire une fois)
+
+### 0. Récupérer le projet
+
+```powershell
+git clone https://github.com/clemsous-cli/whispsy.git
+cd whispsy
+```
 
 ### 1. Environnement Python et dépendances
 
@@ -127,3 +141,14 @@ dans `config.py`, remplacez `qwen2.5:3b-instruct` par `qwen2.5:7b-instruct`.
 - La **transcription** fonctionne entièrement hors-ligne.
 - La **structuration** appelle Ollama **en local** (`localhost`) : aucune donnée
   ne sort de la machine, aucune clé API, aucun cloud.
+
+---
+
+## Licence
+
+Distribué sous licence **Apache 2.0** — voir [LICENSE](LICENSE).
+Copyright © 2026 clemsous-cli.
+
+Les modèles utilisés ont leurs propres licences (Whisper : MIT ; Qwen2.5 :
+Apache 2.0) et **ne sont pas redistribués** dans ce dépôt : ils se téléchargent
+à l'installation.
