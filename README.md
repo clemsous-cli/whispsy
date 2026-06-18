@@ -65,8 +65,9 @@ pip install -r requirements.txt
 
 ### 2. Convertir le modèle de transcription
 
-Télécharge Whisper medium (~3 Go la première fois) et le convertit en format
-optimisé CPU. **À ne faire qu'une seule fois.**
+Télécharge [Whisper medium](https://huggingface.co/openai/whisper-medium) depuis
+Hugging Face (~3 Go la première fois) et le convertit en format optimisé CPU.
+**À ne faire qu'une seule fois.**
 
 ```powershell
 python convert_model.py

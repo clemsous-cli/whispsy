@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>whispsy — Transcription médicale locale</title>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --primary: #0d9488;      /* teal santé */
+    --primary-dark: #0f766e;
+    --accent: #0891b2;
+    --border: #e5e7eb;
+    --code-bg: #1e293b;
+    --code-ink: #e2e8f0;
+    --warn-bg: #fef3c7;
+    --warn-border: #f59e0b;
+    --radius: 14px;
+    --shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.05);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.65;
+  }
+  a { color: var(--primary-dark); }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+
+  /* En-tête */
+  header.hero {
+    background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+    color: #fff;
+    padding: 64px 20px 56px;
+    text-align: center;
+  }
+  header.hero h1 { font-size: 3rem; margin: 0 0 8px; letter-spacing: -1px; }
+  header.hero .tagline { font-size: 1.25rem; opacity: .95; margin: 0 auto 24px; max-width: 620px; }
+  .badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+  .badge {
+    background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3);
+    padding: 5px 13px; border-radius: 999px; font-size: .85rem; font-weight: 600;
+  }
+  .cta {
+    display: inline-block; background: #fff; color: var(--primary-dark);
+    padding: 12px 26px; border-radius: 10px; font-weight: 700; text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0,0,0,.15); transition: transform .12s ease;
+  }
+  .cta:hover { transform: translateY(-2px); }
+
+  /* Sections */
+  main { padding: 48px 0; }
+  section { margin-bottom: 44px; }
+  h2 {
+    font-size: 1.6rem; margin: 0 0 16px; padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+  }
+  h2 .ico { color: var(--primary); margin-right: 8px; }
+  h3 { font-size: 1.1rem; margin: 22px 0 8px; }
+  p { margin: 0 0 14px; }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 22px 24px; box-shadow: var(--shadow);
+  }
+
+  /* Avertissement */
+  .warn {
+    background: var(--warn-bg); border: 1px solid var(--warn-border);
+    border-left: 5px solid var(--warn-border); border-radius: 10px;
+    padding: 16px 20px; margin-bottom: 0;
+  }
+  .warn strong { color: #92400e; }
+
+  /* Grille d'atouts */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+  .feature { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+  .feature .emoji { font-size: 1.7rem; }
+  .feature h3 { margin: 8px 0 4px; }
+  .feature p { color: var(--muted); font-size: .95rem; margin: 0; }
+
+  /* Pipeline */
+  .pipeline { display: flex; flex-direction: column; gap: 14px; }
+  .step { display: flex; gap: 16px; align-items: flex-start; }
+  .step .num {
+    flex: 0 0 36px; height: 36px; border-radius: 50%; background: var(--primary);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1rem;
+  }
+  .step .body { flex: 1; }
+  .step .body b { color: var(--primary-dark); }
+  .layers { margin: 6px 0 0; padding-left: 18px; color: var(--muted); font-size: .94rem; }
+
+  /* Code */
+  pre {
+    background: var(--code-bg); color: var(--code-ink); padding: 16px 18px;
+    border-radius: 10px; overflow-x: auto; font-size: .9rem; line-height: 1.55;
+    margin: 0 0 14px;
+  }
+  code { font-family: "SF Mono", "Cascadia Code", Consolas, "Liberation Mono", monospace; }
+  p code, li code { background: #eef2f4; color: var(--primary-dark); padding: 1px 6px; border-radius: 5px; font-size: .88em; }
+
+  /* Tableau */
+  table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: .95rem; }
+  th { background: #f0fdfa; color: var(--primary-dark); font-weight: 700; }
+  tr:last-child td { border-bottom: none; }
+
+  ul.clean { padding-left: 20px; }
+  ul.clean li { margin-bottom: 6px; }
+
+  footer {
+    text-align: center; padding: 32px 20px; color: var(--muted);
+    border-top: 1px solid var(--border); font-size: .9rem;
+  }
+  footer a { font-weight: 600; }
+
+  @media (max-width: 560px) {
+    header.hero h1 { font-size: 2.2rem; }
+    header.hero { padding: 48px 16px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>🩺 whispsy</h1>
+    <p class="tagline">Transcription locale de comptes-rendus dictés, orientée psychologie&nbsp;/&nbsp;psychiatrie.</p>
+    <div class="badges">
+      <span class="badge">🔒 100&nbsp;% local</span>
+      <span class="badge">🖥️ Tourne sur CPU</span>
+      <span class="badge">⚖️ Apache&nbsp;2.0</span>
+      <span class="badge">🇫🇷 Français</span>
+    </div>
+    <a class="cta" href="https://github.com/clemsous-cli/whispsy">Voir sur GitHub →</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <div class="warn">
+      <strong>⚕️ Avertissement</strong> — whispsy est un outil d'aide à la rédaction,
+      <strong>pas un dispositif médical certifié</strong>. Les transcriptions et comptes-rendus
+      générés doivent toujours être <strong>relus et validés</strong> par le praticien, qui reste
+      seul responsable du contenu. Fourni « tel quel », sans aucune garantie.
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="ico">①</span>Qu'est-ce que c'est&nbsp;?</h2>
+    <div class="card">
+      <p>whispsy transcrit des comptes-rendus médicaux <strong>dictés</strong> (au micro ou depuis
+      un fichier audio) et les met en forme en compte-rendu structuré. Tout fonctionne
+      <strong>100&nbsp;% en local</strong> sur la machine&nbsp;: aucune donnée audio ou texte ne quitte
+      l'ordinateur, ce qui respecte le <strong>secret médical</strong> et le <strong>RGPD</strong>.</p>
+      <p>Conçu pour tourner en <strong>CPU pur</strong>, l'outil est portable sur des laptops
+      modestes (16&nbsp;Go de RAM suffisent).</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="ico">②</span>Comment ça marche</h2>
+    <div class="card">
+      <div class="pipeline">
+        <div class="step">
+          <div class="num">1</div>
+          <div class="body">
+            <b>Transcription</b> — Whisper&nbsp;medium (standard) convertit l'audio en texte, sur CPU.
+            <ul class="layers">
+              <li><b>Couche&nbsp;1</b> · prompt d'orientation psy/psychiatrie (oriente le vocabulaire)</li>
+              <li><b>Couche&nbsp;2</b> · dictionnaire de corrections déterministes (coquilles connues)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div class="body">
+            <b>Structuration</b> — Qwen2.5&nbsp;3B (via Ollama) met le texte en sections cliniques.
+            <ul class="layers">
+              <li><b>Couche&nbsp;3</b> · correction du jargon mal transcrit, à partir du contexte</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p style="margin-top:18px; color:var(--muted); font-size:.93rem;">
+        <strong>Pourquoi un Whisper «&nbsp;standard&nbsp;»&nbsp;?</strong> Les modèles fine-tunés médicaux testés
+        <em>tronquaient</em> les dictées de plus de ~40&nbsp;s et faisaient plus de fautes. Le Whisper standard
+        gère le format long nativement&nbsp;; la précision sur le jargon est rétablie par les trois couches de correction.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="ico">③</span>Atouts</h2>
+    <div class="grid">
+      <div class="feature"><div class="emoji">🔒</div><h3>Confidentiel</h3><p>Tout reste en local. Aucune clé API, aucun cloud, aucune donnée envoyée.</p></div>
+      <div class="feature"><div class="emoji">🖥️</div><h3>Portable</h3><p>Pensé pour le CPU&nbsp;: tourne sur un laptop récent sans carte graphique.</p></div>
+      <div class="feature"><div class="emoji">🩺</div><h3>Spécialisé</h3><p>Orienté psychologie / psychiatrie, avec correction du vocabulaire médical.</p></div>
+      <div class="feature"><div class="emoji">📋</div><h3>Structuré</h3><p>Compte-rendu en sections cliniques, sans jamais inventer de contenu.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="ico">④</span>Prérequis</h2>
+    <ul class="clean">
+      <li><strong>Python 3.13</strong> (ou 3.12)</li>
+      <li><strong><a href="https://ollama.com/download">Ollama</a></strong> installé (pour la structuration)</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="ico">⑤</span>Installation <span style="font-weight:400;font-size:1rem;color:var(--muted);">(une seule fois)</span></h2>
+
+    <h3>0. Récupérer le projet</h3>
+    <pre><code>git clone https://github.com/clemsous-cli/whispsy.git
+cd whispsy</code></pre>
+
+    <h3>1. Environnement Python et dépendances</h3>
+    <pre><code>python -m venv .venv
+.venv\Scripts\Activate.ps1
+
+# torch en version CPU pure (plus légère)
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+pip install -r requirements.txt</code></pre>
+
+    <h3>2. Convertir le modèle de transcription</h3>
+    <p>Télécharge <a href="https://huggingface.co/openai/whisper-medium">Whisper&nbsp;medium</a>
+    depuis Hugging&nbsp;Face (~3&nbsp;Go la première fois) et le convertit en format optimisé CPU.</p>
+    <pre><code>python convert_model.py</code></pre>
+
+    <h3>3. Récupérer le modèle de structuration</h3>
+    <pre><code>ollama pull qwen2.5:3b-instruct</code></pre>
+  </section>
+
+  <section>
+    <h2><span class="ico">⑥</span>Utilisation</h2>
+    <div class="card">
+      <pre><code>.venv\Scripts\Activate.ps1
+python app.py</code></pre>
+      <p>L'interface s'ouvre dans le navigateur. On y&nbsp;:</p>
+      <ul class="clean">
+        <li>importe un fichier audio <strong>ou</strong> enregistre au micro&nbsp;;</li>
+        <li>clique sur <strong>Transcrire</strong> → la transcription apparaît (modifiable&nbsp;: <strong>relisez-la</strong>)&nbsp;;</li>
+        <li><em>(optionnel)</em> clique sur <strong>Structurer en compte-rendu</strong>.</li>
+      </ul>
+      <p style="color:var(--muted);font-size:.93rem;margin:0;">
+        💡 Pas de micro sur un PC de bureau&nbsp;? C'est normal (les tours n'en ont pas). Branchez un casque-micro,
+        ou importez un fichier audio.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="ico">⑦</span>Personnaliser</h2>
+    <table>
+      <tr><th>Fichier</th><th>À quoi ça sert</th></tr>
+      <tr><td><code>config.py</code></td><td>Réglages&nbsp;: modèle de structuration, langue, et surtout le <strong>prompt d'orientation</strong> à adapter à votre spécialité.</td></tr>
+      <tr><td><code>corrections.py</code></td><td>Le <strong>dictionnaire de corrections</strong>&nbsp;: ajoutez-y les erreurs récurrentes que vous repérez.</td></tr>
+      <tr><td><code>structure_report.py</code></td><td>La consigne donnée au modèle de compte-rendu (sections, règles anti-invention).</td></tr>
+    </table>
+    <p style="margin-top:14px;color:var(--muted);font-size:.93rem;">
+      Pour vérifier l'installation en ligne de commande&nbsp;: <code>python test_pipeline.py votre_audio.wav</code>
+      (fournissez votre propre fichier audio&nbsp;; aucun n'est inclus dans le dépôt).</p>
+  </section>
+
+  <section>
+    <h2><span class="ico">⑧</span>Confidentialité &amp; licence</h2>
+    <div class="card">
+      <p>La <strong>transcription</strong> fonctionne entièrement hors-ligne. La <strong>structuration</strong>
+      appelle Ollama <strong>en local</strong> (<code>localhost</code>)&nbsp;: aucune donnée ne sort de la machine.</p>
+      <p style="margin:0;">Distribué sous licence <strong>Apache&nbsp;2.0</strong>. Les modèles utilisés (Whisper&nbsp;: MIT&nbsp;;
+      Qwen2.5&nbsp;: Apache&nbsp;2.0) ont leurs propres licences et ne sont pas redistribués dans le dépôt.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>🩺 <strong>whispsy</strong> — outil local de transcription médicale ·
+  <a href="https://github.com/clemsous-cli/whispsy">github.com/clemsous-cli/whispsy</a></p>
+</footer>
+
+</body>
+</html>
