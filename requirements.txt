@@ -1,0 +1,24 @@
+# Dépendances de l'application de transcription médicale (full CPU)
+#
+# Installation (torch en version CPU pure, plus légère) :
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+#   pip install -r requirements.txt
+#
+# Versions figées = celles testées et fonctionnelles sur Python 3.13.
+
+# Moteur de transcription optimisé CPU (basé sur CTranslate2)
+faster-whisper==1.2.1
+
+# CTranslate2 : moteur d'inférence rapide sur CPU + outil de conversion du modèle
+ctranslate2==4.8.0
+
+# Transformers + torch : nécessaires UNIQUEMENT pour convertir le modèle
+# Hugging Face vers le format CTranslate2 (étape unique). torch en version CPU.
+transformers==5.12.1
+torch==2.12.1
+
+# Interface web locale
+gradio==6.19.0
+
+# Client HTTP pour parler au LLM local (Ollama) qui structure le compte-rendu
+requests==2.32.3

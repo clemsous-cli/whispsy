@@ -1,0 +1,18 @@
+# Environnement Python
+.venv/
+__pycache__/
+*.pyc
+
+# Modèle converti (volumineux, ~800 Mo) : on ne le versionne pas.
+# Il se régénère avec convert_model.py
+models/
+
+# Fichiers audio et transcriptions de test (données potentiellement sensibles)
+*.wav
+*.mp3
+*.m4a
+*.txt
+!requirements.txt
+
+# Cache Hugging Face local éventuel
+.cache/
